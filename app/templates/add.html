@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block content %}
+<div class="text-center">
+  <h2 class="mb-4">Add Activity</h2>
+ 
+<form method = "POST" class = "row g-3">
+  <div class = "col-md-6">  
+    <label for = "title" class = "form-label">Title</label>
+    <input type = "text" class = "form-control" id = "title" name = "title" required>
+  </div>
+  <div class = "col-md-6">
+    <label for = "venue" class="form-label">Venue</label>
+    <input type = "text" class = "form-control" id = "venue" name = "venue" required>
+  </div>
+  <div class = "col-md-2">
+    <label for = "date" class = "form-label">Date</label>
+    <input type = "date" class = "form-control" id = "date" name = "date" required>
+  </div>
+  <div class = "col-md-4">
+    <label for = "time" class = "form-label">Time</label>
+    <input type = "time" class = "form-control" id = "time" name = "time" required>
+  </div>
+  <div class = "col-md-4">
+    <label for = "person_in_charge" class = "form-label">Person In Charge</label>
+    <input type = "text" class = "form-control" id = "person_in_charge" name = "person_in_charge" required>
+    </div>  
+  <div class = "col-md-4">
+    <label for="mode" class="form-label">Mode</label>
+    <select id="mode" name="mode" class="form-select" required>
+      <option selected disabled value="">Choose...</option>
+      <option value="Online">Online</option>
+      <option value="In-Person">In-Person</option>
+      <option value="Hybrid">Hybrid</option>
+    </select>
+<div class = "col-md-90">
+    <label for = "remarks" class = "form-label">Remarks</label>
+    <textarea class = "form-control" id = "remarks" name = "remarks" rows = "3"></textarea>
+</div>
+<div class = "col-md-12">
+  <div class = "form-check">
+    <input class = "form-check-input" type = "checkbox" value = "on" id = "requires_rd" name = "requires_rd">
+    <label class = "form-check-label" for = "requires_rd">
+      Requires RD
+    </label>
+  </div>
+</div>
+  <div class = "col-12 mt-3">
+    <button type = "submit" class = "btn btn-primary">Save Activity</button>
+    <a href = "{{ url_for('main.home') }}" class = "btn btn-secondary">Cancel</a>
+  </div>
+</form>
+</div>
+{% endblock %}

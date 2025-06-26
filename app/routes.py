@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from .models import Activity
 from . import db
+from datetime import datetime
 
 main = Blueprint("main", __name__)
 
@@ -15,8 +16,8 @@ def add_activity():
     if request.method == "POST":
         title = request.form.get("title")
         venue = request.form.get("venue")
-        date = request.form.get("date")
-        time = request.form.get("time")
+        date = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
+        time = datetime.strptime(request.form.get("time"), "%H:%M").time()
         person_in_charge = request.form.get("person_in_charge")
         mode = request.form.get("mode")
         remarks = request.form.get("remarks")
@@ -39,3 +40,41 @@ def add_activity():
         return redirect(url_for("main.home"))
 
     return render_template("add.html")
+
+
+@main.route("/activities")
+def activities():
+    activities = Activity.query.all()
+    return render_template("activities.html", activities=activities)
+
+
+@main.route("/edit/<int:activity_id>", methods=["GET", "POST"])
+def edit_activity(activity_id):
+    activity = Activity.query.get_or_404(activity_id)
+
+    if request.method == "POST":
+        activity.title = request.form.get("title")
+        activity.venue = request.form.get("venue")
+        activity.date = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
+        activity.time = datetime.strptime(request.form.get("time"), "%H:%M").time()
+        activity.person_in_charge = request.form.get("person_in_charge")
+        activity.mode = request.form.get("mode")
+        activity.remarks = request.form.get("remarks")
+        activity.requires_rd = (
+            True if request.form.get("requires_rd") == "on" else False
+        )
+
+        db.session.commit()
+
+        return redirect(url_for("main.activities"))
+
+    return render_template("edit.html", activity=activity)
+
+
+@main.route("/delete/<int:activity_id>", methods=["POST"])
+def delete_activity(activity_id):
+    print("Method:", request.method)
+    activity = Activity.query.get_or_404(activity_id)
+    db.session.delete(activity)
+    db.session.commit()
+    return redirect(url_for("main.activities"))

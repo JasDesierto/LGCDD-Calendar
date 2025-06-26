@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">All Activities</h2>
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Title</th>
+        <th>Date & Time</th>
+        <th>Venue</th>
+        <th>Person In Charge</th>
+        <th>Requires RD</th>
+        <th>Notes</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for activity in activities %}
+      <tr>
+        <td>{{ activity.title }}</td>
+        <td>
+          {{ activity.date.strftime("%B %d, %Y") }} {{
+          activity.time.strftime("%I:%M %p") }}
+        </td>
+        <td>{{activity.venue}}</td>
+        <td>{{activity.person_in_charge}}</td>
+        <td>{{'Yes' if activity.requires_rd else 'No' }}</td>
+        <td>{{activity.remarks}}</td>
+        <td>
+          <a
+            href="{{ url_for('main.edit_activity', activity_id=activity.id) }}"
+            class="btn btn-primary"
+            >Edit</a
+          >
+          <form
+            action="{{ url_for('main.delete_activity', activity_id=activity.id) }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

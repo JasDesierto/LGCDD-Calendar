@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from .models import Activity
 from . import db
-from datetime import datetime
+from datetime import datetime, timedelta
 
 main = Blueprint("main", __name__)
 
@@ -78,3 +78,25 @@ def delete_activity(activity_id):
     db.session.delete(activity)
     db.session.commit()
     return redirect(url_for("main.activities"))
+
+
+@main.route("/")
+def calendar():
+    return render_template("index.html")
+
+
+@main.route("/api/activities")
+def get_activities():
+    activities = Activity.query.all()
+    events = []
+
+    for activity in activities:
+        event = {
+            "id": activity.id,
+            "title": activity.title,
+            "start": f"{activity.date}T{activity.time}",
+            "end": f"{activity.date}{(datetime.combine(activity.date, activity.time) + timedelta(hours=1)).time().strftime('%H:%M:%S')}",
+        }
+        events.append(event)
+
+    return jsonify(events)

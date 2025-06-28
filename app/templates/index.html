@@ -1,11 +1,49 @@
 {% extends "base.html" %} {% block content %}
-<div class="text-center">
-  <h1 class="mb-3">LGCDD Tracker Using App Factory!</h1>
-  <p class="lead">
+<div class="container mt-4">
+  <h1 class="text-center mb-3">LGCDD Calendar and Tracker</h1>
+  <p class="text-center lead">
     This is your home page. Please click below to start adding activities.
   </p>
-  <a href="/add" class="btn btn-primary">Add Activity</a>
-  <a href="/activities" class="btn btn-primary">View Activities</a>
-</div>
 
-{% endblock %}
+  <div class="mb-4 d-flex flex-column align-items-start">
+    <a
+      href="{{ url_for('main.add_activity') }}"
+      class="btn btn-primary me-2 mb-3"
+      >Add Activity</a
+    >
+    <a href="{{ url_for('main.activities') }}" class="btn btn-primary me-2"
+      >View Activities</a
+    >
+  </div>
+
+  <!-- Calendar Container -->
+  <div>
+    <div
+      id="calendar"
+      style="max-width: 1100px; margin: 0 auto; padding: 20px"
+    ></div>
+  </div>
+
+  <!-- FullCalendar CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- FullCalendar JS Bundle -->
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+  <!-- Initialize FullCalendar -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var calendarEl = document.getElementById("calendar");
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        events: "/api/activities",
+      });
+      calendar.render();
+    });
+  </script>
+  {% endblock %}
+</div>

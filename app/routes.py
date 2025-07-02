@@ -11,6 +11,11 @@ def home():
     return render_template("index.html")
 
 
+@main.route("/")
+def calendar():
+    return render_template("index.html")
+
+
 @main.route("/add", methods=["GET", "POST"])
 def add_activity():
     if request.method == "POST":
@@ -80,9 +85,18 @@ def delete_activity(activity_id):
     return redirect(url_for("main.activities"))
 
 
-@main.route("/")
-def calendar():
-    return render_template("index.html")
+@main.route("/calendar_activity/<int:activity_id>")
+def view_activity(activity_id):
+    activity = Activity.query.get_or_404(activity_id)
+    return render_template("activity_details.html", activity=activity)
+
+
+@main.route("/delete_calendar_activity/<int:activity_id>", methods=["POST"])
+def delete_calendar_activity(activity_id):
+    activity = Activity.query.get_or_404(activity_id)
+    db.session.delete(activity)
+    db.session.commit()
+    return jsonify({"Activity Deleted Successfully": True})
 
 
 @main.route("/api/activities")

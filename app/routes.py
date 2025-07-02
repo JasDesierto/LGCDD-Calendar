@@ -96,7 +96,7 @@ def delete_calendar_activity(activity_id):
     activity = Activity.query.get_or_404(activity_id)
     db.session.delete(activity)
     db.session.commit()
-    return jsonify({"Activity Deleted Successfully": True})
+    return render_template("delete_success.html")
 
 
 @main.route("/api/activities")
@@ -114,6 +114,3 @@ def get_activities():
         events.append(event)
 
     return jsonify(events)
-
-
-# hehe

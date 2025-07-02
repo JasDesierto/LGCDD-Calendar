@@ -13,7 +13,7 @@
             class="btn btn-primary"
             >Edit</a
           >
-          <form action="{{ url_for('main.delete_activity', activity_id=activity.id) }}" method="POST" style="display:inline;">
+          <form action="{{ url_for('main.delete_calendar_activity', activity_id=activity.id) }}" method="POST" style="display:inline;">
             <button type="submit" class="btn btn-danger">Delete</button>
             </form>           
 </div>

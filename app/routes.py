@@ -114,3 +114,6 @@ def get_activities():
         events.append(event)
 
     return jsonify(events)
+
+
+# hehe

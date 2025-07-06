@@ -1,22 +1,12 @@
 {% extends "base.html" %} {% block content %}
-<div class="container mt-4">
+
+<!-- Home Page -->
+<div class="container mt-4 position-relative">
   <h1 class="text-center mb-3">LGCDD Calendar and Tracker</h1>
   <p class="text-center lead">
     This is your home page. Please click below to start adding activities.
   </p>
-
-  <div class="mb-4 d-flex flex-column align-items-start">
-    <a
-      href="{{ url_for('main.add_activity') }}"
-      class="btn btn-primary me-2 mb-3"
-      >Add Activity</a
-    >
-    <a href="{{ url_for('main.activities') }}" class="btn btn-primary me-2"
-      >View Activities</a
-    >
-  </div>
-
-  <!-- Calendar Container -->
+  <!-- Calendar div -->
   <div>
     <div
       id="calendar"
@@ -49,6 +39,21 @@
       calendar.render();
     });
   </script>
-
-  {% endblock %}
 </div>
+<!-- End of Calendar Container -->
+
+<!-- Buttons Container -->
+
+<div
+  class="mb-4 d-flex flex-column align-items-start position-absolute p-1"
+  style="top: 220px; left: 200px"
+>
+  <a href="{{ url_for('main.add_activity') }}" class="btn btn-primary me-2 mb-3"
+    >Add Activity</a
+  >
+  <a href="{{ url_for('main.activities') }}" class="btn btn-primary me-2"
+    >View Activities</a
+  >
+</div>
+
+{% endblock %}

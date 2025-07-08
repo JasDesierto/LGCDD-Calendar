@@ -80,7 +80,8 @@
 
 <div class="layout">
   <nav class="sidebar">
-    <h2>LGCDD</h2>
+    <h2 class = "shadow-lg p-3 mb-5 bg-body-tertiary rounded">LGCDD</h2>
+    <br></br>
     <a href="{{ url_for('main.add_activity') }}">Add Activity</a>
     <a href="{{ url_for('main.activities') }}">View Activities</a>
   </nav>
@@ -93,6 +94,34 @@
   href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css"
   rel="stylesheet"
 />
+<style>
+  #calendar .fc-toolbar-title {
+    margin-left: 100px;
+    margin-top: 20px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1976d2;
+  }
+</style>
+<style>
+  /* Days of the week */
+  .fc-col-header-cell-cushion {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1976d2;
+  }
+
+  /* Day numbers */
+  .fc-daygrid-day-number {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+  }
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {

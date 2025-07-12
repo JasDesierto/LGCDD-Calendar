@@ -43,8 +43,8 @@ def add_activity():
         db.session.commit()
 
         return redirect(url_for("main.home"))
-
-    return render_template("add.html")
+    clicked_date = request.args.get("date")
+    return render_template("add.html", date=clicked_date)
 
 
 @main.route("/activities")

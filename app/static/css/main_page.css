@@ -1,0 +1,105 @@
+/* main page styles */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+body {
+  background: #f7f9fa; /* Light background, adjust as needed */
+}
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  margin: 0; /* Prevent centering */
+  padding: 0;
+}
+.sidebar {
+  width: 220px;
+  background: #1976d2;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 40px;
+  box-sizing: border-box;
+  height: 100vh;
+  min-width: 220px;
+  margin: 0; /* No margin! */
+  border: none;
+  position: relative; /* Ensures flush left */
+  left: 0;
+  top: 0;
+}
+.sidebar h2 {
+  margin: 0 0 40px 32px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.sidebar a {
+  display: block;
+  width: 100%;
+  color: #fff;
+  text-decoration: none;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.sidebar a:hover,
+.sidebar a.active {
+  background: #1565c0;
+}
+
+/* calendar styles */
+
+.calendar-area {
+  flex: 1 1 0%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+#calendar {
+  flex: 1 1 0%;
+  min-width: 0;
+  min-height: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+  height: 100%;
+  width: 100%;
+}
+
+#calendar .fc-toolbar-title {
+  margin-left: 100px;
+  margin-top: 20px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1976d2;
+}
+
+/* Days of the week */
+.fc-col-header-cell-cushion {
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+/* Day numbers */
+.fc-daygrid-day-number {
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}

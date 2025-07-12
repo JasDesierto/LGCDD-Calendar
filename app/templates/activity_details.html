@@ -7,7 +7,7 @@
   <p><strong>Venue:</strong> {{ activity.venue }}</p>
   <p><strong>Person In Charge:</strong> {{ activity.person_in_charge }}</p>
   <p><strong>Requires RD:</strong> {{ 'Yes' if activity.requires_rd else 'No' }}</p>
-  <p><strong>Notes:</strong> {{ activity.notes }}</p>
+  <p><strong>Notes:</strong> {{ activity.remarks }}</p>
           <a
             href="{{ url_for('main.edit_activity', activity_id=activity.id) }}"
             class="btn btn-primary"

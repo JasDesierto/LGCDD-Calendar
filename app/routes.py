@@ -13,7 +13,7 @@ def home():
 
 @main.route("/")
 def calendar():
-    return render_template("index.html")
+    return render_template("calendar.html")
 
 
 @main.route("/add", methods=["GET", "POST"])
@@ -114,3 +114,8 @@ def get_activities():
         events.append(event)
 
     return jsonify(events)
+
+
+@main.route("/sample")
+def sample():
+    return render_template("calendar.html")

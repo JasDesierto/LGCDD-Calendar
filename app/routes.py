@@ -114,8 +114,3 @@ def get_activities():
         events.append(event)
 
     return jsonify(events)
-
-
-@main.route("/sample")
-def sample():
-    return render_template("calendar.html")

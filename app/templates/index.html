@@ -1,29 +1,19 @@
-{% extends "base.html" %} {% block content %}
-<!--Main Page HTML Structure-->
-<div class="layout">
-  <nav class="sidebar">
-    <h2 class =>LGCDD</h2>
-    <br></br>
-    <a href="{{ url_for('main.add_activity') }}">Add Activity</a>
-    <a href="{{ url_for('main.activities') }}">View Activities</a>
-  </nav>
+{% extends "base.html" %}
 
 
-  <div class="calendar-area">
-    <div id="calendar"></div>
-  </div>
+{%block title%}Home{%endblock%}
+
+{%block head_extras%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calendar_styles.css') }}">
+{%endblock%}
+
+{% block content %}
+<div class="calendar-area">
+  <div id="calendar"></div>
 </div>
 
-<!-- Style Sheets-->
-<link
-  href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css"
-  rel="stylesheet"/>
-<link href ="{{ url_for('static', filename='css/main_page.css') }}" rel="stylesheet" />
+{%endblock%}
 
-<!-- JavaScript Files-->
-
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-<script src ="{{ url_for('static', filename='js/calendar.js') }}"></script> 
-
-
-{% endblock %}
+{%block scripts%}
+<script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+{%endblock%}

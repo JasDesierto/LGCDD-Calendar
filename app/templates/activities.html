@@ -26,16 +26,9 @@
         <td>{{'Yes' if activity.requires_rd else 'No' }}</td>
         <td>{{activity.remarks}}</td>
         <td>
-          <a
-            href="{{ url_for('main.edit_activity', activity_id=activity.id) }}"
-            class="btn btn-primary"
-            >Edit</a
-          >
-          <form
-            action="{{ url_for('main.delete_activity', activity_id=activity.id) }}"
-            method="POST"
-            style="display: inline"
-          >
+          <a href="{{ url_for('main.edit_activity', activity_id=activity.id) }}" class="btn btn-primary">Edit</a>
+          <form action="{{ url_for('main.delete_activity', activity_id=activity.id) }}" method="POST"
+            style="display: inline">
             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
           </form>
         </td>

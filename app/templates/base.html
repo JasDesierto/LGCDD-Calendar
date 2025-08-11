@@ -5,46 +5,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{%block title%}LGCDD{%endblock%}</title>
-  <!-- Insert Stye Sheet Here-->
+
+
+  <!--CSS Libs-->
+
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+  <!--Custom CSS -->
+
   <link href="{{ url_for('static', filename='css/main_page_styles.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/sidebar_styles.css') }}" rel="stylesheet">
+
+  <!-- small local CSS vars and helpers (you can merge into your CSS) -->
+  <style>
+    :root {
+      --header-height: 64px;
+      --sidebar-width: 220px;
+      --footer-height: 36px;
+      --gutter: 1rem;
+      --page-bg: #f6f7fb;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--page-bg);
+    }
+
+    /* main content area reserves space for fixed elements */
+    #main-content {
+      margin-left: var(--sidebar-width);
+      padding: calc(var(--header-height) + var(--gutter)) var(--gutter) calc(var(--footer-height) + var(--gutter));
+      min-height: calc(100vh - var(--header-height) - var(--footer-height));
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 991.98px) {
+      #main-content {
+        margin-left: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+  </style>
+
 
   {%block head_extras%} {%endblock%}
 </head>
 
 <body>
-  <!-- this is the main wrapper -->
-
-  <!--Page Content Wrapper-->
 
   <!--Nav Bar-->
+  {# NAVBAR (fixed-top) #}
   {% include 'navbar.html' %}
 
   <!--Sidebar-->
+  {# SIDEBAR (fixed between header and footer) #}
   {% include 'sidebar.html' %}
 
   <!--Main Content Area-->
+  {# Main content area (pages extend this) #}
+  <main id="main-content" role="main" class="container-fluid">
+    {% block content %} {% endblock %}
+  </main>
 
-  <div class="container-fluid">
-    {%block content%}
-    {% endblock %}
-  </div>
-
-
-  </div> <!--end of content-wrapper-->
-  </div> <!--End of Wrapper-->
-  <!-- JS Files Here-->
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
-    crossorigin="anonymous"></script>
-  <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
-  {%block scripts%}
-  <!-- Insert JS Here-->
-  {%endblock%}
+  <!--Footer-->
+  {# Footer (fixed-bottom) #}
+  {% include 'footer.html' %}
 
   <!-- Modal Structure -->
   <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -117,7 +149,7 @@
             </div>
             <!-- modal footer-->
             <div class="modal-footer">
-              <button type="submit" class="btn btn primary"> Save Activity</button>
+              <button type="submit" class="btn btn-primary"> Save Activity</button>
               <a href="{{url_for('main.home')}}" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
             </div>
           </form>
@@ -127,6 +159,21 @@
     </div>
   </div>
   <!--end of modal-->
+
+  <!-- JS Libs -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
+
+  <!-- Custom JS -->
+  <!-- small layout helper: measures nav/footer/sidebar and sets CSS vars -->
+  <!--<script src="{{ url_for('static', filename='js/layout.js') }}"></script>-->
+  <!-- sidebar toggle script -->
+  <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+  {%block scripts%}
+  {%endblock%}
+
 </body>
 
 </html>

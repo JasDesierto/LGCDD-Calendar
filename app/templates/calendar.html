@@ -1,10 +1,22 @@
-{% extends "base.html" %} {% block content %}
-<div id="calendar"></div>
-{% endblock %} {% block scripts %}
+{% extends "base.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block head_extras %}
 <!-- Style Sheets-->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css" rel="stylesheet" />
 <link href="{{ url_for('static', filename='css/calendar_styles.css') }}" py rel="stylesheet" />
 
+{% endblock %}
+
+{% block content %}
+<div id="calendar-area">
+    <div id="calendar"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
 <!-- JavaScript Files-->
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>

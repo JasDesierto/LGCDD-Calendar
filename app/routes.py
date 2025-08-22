@@ -8,7 +8,7 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 def home():
-    return render_template("calendar.html")
+    return render_template("base.html")
 
 
 @main.route("/add", methods=["GET", "POST"])

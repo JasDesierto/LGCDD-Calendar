@@ -6,11 +6,10 @@
             <nav class="nav flex-column">
                 <a class="nav-link {{ 'active' if active=='activities' else '' }}"
                     href="{{ url_for('main.activities') }}">Activities</a>
-                <a class="nav-link {{ 'active' if active=='favourites' else '' }}"
-                    href="{{ url_for('main.add_activity') }}">Add
-                    Activity</a>
+                <a class="nav-link {{ 'active' if active=='add_activity' else '' }}" href="#" data-bs-toggle="modal"
+                    data-bs-target="#addModal">Add Activity</a>
                 <a class="nav-link {{ 'active' if active=='messages' else '' }}" href="#">Others</a>
             </nav>
         </div>
-
+    </div>
 </aside>

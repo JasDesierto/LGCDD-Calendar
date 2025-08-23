@@ -74,14 +74,28 @@ document.addEventListener("DOMContentLoaded", function () {
       handleWindowResize: true,
       events: "/api/activities",
 
-      // keep your existing interactions
+      // INTERACTIONS
       dateClick: function (info) {
-        window.location.href = "/add?date=" + info.dateStr;
-      },
-      eventClick: function (info) {
-        window.location.href = "/calendar_activity/" + info.event.id;
+        var dateInput = document.getElementById("date");
+        if (dateInput) dateInput.value = info.dateStr;
+
+        //Try to open the modal (bootstrap 5)
+        var el = document.getElementById("addModal");
+        if (el && window.bootstrap && bootstrap.Modal) {
+          var modal = bootstrap.Modal.getOrCreateInstance(el, {
+            backdrop: "static",
+            keyboard: false,
+          });
+          modal.show();
+        }
+        //fallback, if bootstrap not available, use the endpoint
+        else {
+          window.location.href = "/add?date=" + info.dateStr;
+        }
       },
     });
+
+    // EDIT AND DELETE INTERACTIONS
 
     // render the calendar into the DOM
     calendar.render();

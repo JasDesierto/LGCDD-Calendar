@@ -19,16 +19,16 @@
 { block content %}
 
 <!-- Delete and Edit Modal-->
-<div class="modal fade" id="edit_and_delete_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="editAndDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"> <!-- Centered and scrollable modal -->
+<div class="modal fade" id="activityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editAndDeleteModalLabel">Edit Activity</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Activity Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
 
-            <div class="container mt-4">
                 <h2 class="mb-4">Activity Details</h2>
                 <p><strong>Activity ID:</strong> {{ activity.id }}</p>
                 <p><strong>Title:</strong> {{ activity.title }}</p>
@@ -38,22 +38,21 @@
                 <p><strong>Person In Charge:</strong> {{ activity.person_in_charge }}</p>
                 <p><strong>Requires RD:</strong> {{ 'Yes' if activity.requires_rd else 'No' }}</p>
                 <p><strong>Notes:</strong> {{ activity.remarks }}</p>
-                <a href="{{ url_for('main.edit_activity', activity_id=activity.id) }}" class="btn btn-primary">Edit</a>
-                <form action="{{ url_for('main.delete_calendar_activity', activity_id=activity.id) }}" method="POST"
-                    style="display:inline;">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
             </div>
         </div>
     </div>
-</div>
-</div>
-<!--end of modal-->
+    <!--end of modal-->
 
-{% block scripts %}
-<!-- JavaScript Files-->
+    {% block scripts %}
+    <!-- JavaScript Files-->
 
-<!--removed full calendar script since it is already in the base.html-->
-<script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+    <!--removed full calendar script since it is already in the base.html-->
+    <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
 
-{% endblock %}
+    {% endblock %}

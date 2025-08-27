@@ -26,20 +26,11 @@
                 <h5 class="modal-title">Activity Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+
             <!-- Modal Body -->
-            <div class="modal-body">
+            <div class="modal-body"></div>
 
-                <h2 class="mb-4">Activity Details</h2>
-                <p><strong>Activity ID:</strong> {{ activity.id }}</p>
-                <p><strong>Title:</strong> {{ activity.title }}</p>
-                <p><strong>Date & Time:</strong> {{ activity.date.strftime("%B %d, %Y") }} {{
-                    activity.time.strftime("%I:%M %p") }}</strong></p>
-                <p><strong>Venue:</strong> {{ activity.venue }}</p>
-                <p><strong>Person In Charge:</strong> {{ activity.person_in_charge }}</p>
-                <p><strong>Requires RD:</strong> {{ 'Yes' if activity.requires_rd else 'No' }}</p>
-                <p><strong>Notes:</strong> {{ activity.remarks }}</p>
 
-            </div>
             <!-- Modal Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>

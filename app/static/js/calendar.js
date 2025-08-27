@@ -95,10 +95,25 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
 
-    // EDIT AND DELETE INTERACTIONS
+    // Edit and Delete Interactions
+    eventClick(info) {
+  info.jsEvent.preventDefault();
 
-    // render the calendar into the DOM
-    calendar.render();
+  fetch(`/activities/${info.event.id}/partial`)
+    .then(res => res.text())
+    .then(html => {
+      // 🔹 Inject the rendered HTML into the modal body
+      document.querySelector('#activityModal .modal-body').innerHTML = html;
+
+      // 🔹 Update footer buttons
+      document.getElementById('editBtn').href = `/activities/${info.event.id}/edit`;
+      document.getElementById('deleteBtn').href = `/activities/${info.event.id}/delete`;
+
+      // 🔹 Show modal
+      new bootstrap.Modal(document.getElementById('activityModal')).show();
+    })
+    .catch(err => console.error(err));
+}
 
     // small delay to allow fonts/images to settle, then update size
     setTimeout(function () {

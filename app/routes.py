@@ -48,21 +48,6 @@ def activity_partial(id):
     return render_template("activity_modal_body.html", activity=activity)
 
 
-@main.route("/delete/<int:activity_id>", methods=["POST"])
-def delete_activity(activity_id):
-    print("Method:", request.method)
-    activity = Activity.query.get_or_404(activity_id)
-    db.session.delete(activity)
-    db.session.commit()
-    return redirect(url_for("main.activities"))
-
-
-@main.route("/calendar_activity/<int:activity_id>")
-def view_activity(activity_id):
-    activity = Activity.query.get_or_404(activity_id)
-    return render_template("activity_details.html", activity=activity)
-
-
 @main.route("/delete_calendar_activity/<int:activity_id>", methods=["POST"])
 def delete_calendar_activity(activity_id):
     activity = Activity.query.get_or_404(activity_id)

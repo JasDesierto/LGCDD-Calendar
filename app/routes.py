@@ -6,11 +6,13 @@ from datetime import datetime, timedelta
 main = Blueprint("main", __name__)
 
 
+# MAIN PAGE
 @main.route("/")
 def home():
     return render_template("calendar.html")
 
 
+# ADD ACTIVITY
 @main.route("/add", methods=["GET", "POST"])
 def add_activity():
     if request.method == "POST":
@@ -42,12 +44,23 @@ def add_activity():
     return render_template("add.html", date=clicked_date)
 
 
+# VIEW ACTIVITY
 @main.route("/activities/<int:id>/partial")
 def activity_partial(id):
     activity = Activity.query.get_or_404(id)
     return render_template("activity_modal_body.html", activity=activity)
 
 
+# VIEW ACTIVITY-SIDEBAR
+
+
+@main.route("/all_activities")
+def get_all_activities():
+    activities = Activity.query.all()
+    return render_template("all_activities.html", activities=activities)
+
+
+# DELETE ACTIVITY
 @main.route("/delete_calendar_activity/<int:activity_id>", methods=["POST"])
 def delete_calendar_activity(activity_id):
     activity = Activity.query.get_or_404(activity_id)
@@ -56,6 +69,7 @@ def delete_calendar_activity(activity_id):
     return render_template("delete_success.html")
 
 
+# THIS IS FOR API ENDPOINT WHICH PROVIDES ACTIVITY DATA IN THE CALENDAR
 @main.route("/api/activities")
 def get_activities():
     activities = Activity.query.all()

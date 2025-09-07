@@ -61,6 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
    * - render and then force an update/redraw a little later (helps when fonts/styles load)
    * - respond to window resize by recomputing and applying new height
    */
+
+
   function initCalendar() {
     var h = computeDesiredHeight();
 
@@ -73,12 +75,14 @@ document.addEventListener("DOMContentLoaded", function () {
       expandRows: true,
       handleWindowResize: true,
       events: "/api/activities",
+     
+
 
       // INTERACTIONS
       dateClick: function (info) {
         var dateInput = document.getElementById("date");
         if (dateInput) dateInput.value = info.dateStr;
-
+      
         //Try to open the modal (bootstrap 5)
         var el = document.getElementById("addModal");
         if (el && window.bootstrap && bootstrap.Modal) {
@@ -95,13 +99,16 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
 
-    // Edit and Delete Interactions
-    eventClick(info) {
-  info.jsEvent.preventDefault();
+     // Edit and Delete Interactions
+    eventClick: function (info) {
+      info.jsEvent.preventDefault();
 
-  fetch(`/activities/${info.event.id}/partial`)
-    .then(res => res.text())
-    .then(html => {
+
+    
+
+      fetch(`/activities/${info.event.id}/partial`)
+        .then(res => res.text())
+        .then(html => {
       // 🔹 Inject the rendered HTML into the modal body
       document.querySelector('#activityModal .modal-body').innerHTML = html;
 

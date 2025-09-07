@@ -3,47 +3,38 @@
 {% block title %}Calendar{% endblock %}
 
 {% block head_extras %}
-<!-- Style Sheets-->
-<!--removed full calendar css since it is already in the base.html-->
+<!-- Style Sheets -->
+<!-- FullCalendar CSS is already loaded in base.html -->
 <link href="{{ url_for('static', filename='css/calendar_styles.css') }}" rel="stylesheet" />
-
 {% endblock %}
 
 {% block content %}
-<div id="calendar-area">
-    <div id="calendar"></div>
+<div class="calendar-area">
+  <div id="calendar"></div>
 </div>
 
+<!-- View Activity Modal -->
+<div class="modal fade" id="activityModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Activity Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- Modal Body for Injection -->
+      <div class="modal-body"></div>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <a id="editBtn" class="btn btn-secondary">Edit</a>
+        <a id="deleteBtn" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
-{ block content %}
-
-<!-- Delete and Edit Modal-->
-<div class="modal fade" id="activityModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Activity Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal Body for Injection -->
-            <div class="modal-body"></div>
-
-
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
-            </div>
-        </div>
-    </div>
-    <!--end of modal-->
-
-    {% block scripts %}
-    <!-- JavaScript Files-->
-
-    <!--removed full calendar script since it is already in the base.html-->
-    <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
-
-    {% endblock %}
+{% block scripts %}
+<!-- Page JS -->
+<!-- FullCalendar JS is already loaded in base.html -->
+<script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+{% endblock %}

@@ -1,159 +1,141 @@
 document.addEventListener("DOMContentLoaded", function () {
   // find the calendar element
-  var calendarEl = document.getElementById("calendar");
+  const calendarEl = document.getElementById("calendar");
   if (!calendarEl) {
-    // stop early and log so you know why nothing happened
-    console.error(
-      "calendar element not found (#calendar). Make sure the element exists in the DOM."
-    );
+    console.error("calendar element not found (#calendar).");
     return;
   }
 
-  // the element that visually contains the calendar (usually .calendar-area)
-  var wrapper = calendarEl.parentElement;
-
-  /**
-   * Read a CSS variable (like --header-height) and return a number (px).
-   * If the var doesn't exist or can't be parsed, return the fallback.
-   */
-  function cssVarNumber(name, fallback) {
-    var raw = getComputedStyle(document.documentElement).getPropertyValue(name);
-    if (!raw) return fallback;
-    var n = parseFloat(raw);
-    return isNaN(n) ? fallback : n;
+  // container around the calendar
+  const wrapper = calendarEl.parentElement;
+  if (!wrapper) {
+    console.error("No parent wrapper for #calendar.");
+    return;
   }
 
-  /**
-   * Compute the pixel height we want FullCalendar to use:
-   * - measure wrapper height (the available visual space)
-   * - subtract toolbar height (so the grid fills what's left)
-   * - if computed value is too small, fall back to viewport-based calculation
-   * - clamp to a reasonable minimum and return an integer px value
-   */
+  // helpers
+  function cssVarNumber(name, fallback) {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(
+      name
+    );
+    if (!raw) return fallback;
+    const n = parseFloat(raw);
+    return Number.isNaN(n) ? fallback : n;
+  }
+
   function computeDesiredHeight() {
-    // wrapper height in pixels (visible area for calendar)
-    var wrapperH = Math.max(0, wrapper.getBoundingClientRect().height);
+    const wrapperH = Math.max(0, wrapper.getBoundingClientRect().height);
+    // toolbar exists only after render; pre-render this will be 0 (that’s okay)
+    const toolbar = calendarEl.querySelector(".fc-toolbar");
+    const toolbarH = toolbar ? toolbar.getBoundingClientRect().height : 0;
 
-    // FullCalendar toolbar (if present) takes vertical space at top
-    var toolbar = calendarEl.querySelector(".fc-toolbar");
-    var toolbarH = toolbar ? toolbar.getBoundingClientRect().height : 0;
-
-    // available height for the calendar grid
-    var desired = wrapperH - toolbarH;
-
-    // fallback: if computed value is suspiciously small, use viewport minus CSS vars
+    let desired = wrapperH - toolbarH;
     if (desired < 200) {
-      var header = cssVarNumber("--header-height", 64); // default header height
-      var footer = cssVarNumber("--footer-height", 36); // default footer height
-      var gutter = cssVarNumber("--gutter", 16); // default gutter
+      const header = cssVarNumber("--header-height", 64);
+      const footer = cssVarNumber("--footer-height", 36);
+      const gutter = cssVarNumber("--gutter", 16);
       desired = window.innerHeight - header - footer - 2 * gutter;
     }
-
-    // enforce a sane minimum (so calendar is usable) and return integer px
-    desired = Math.max(300, Math.round(desired));
-    return desired;
+    return Math.max(300, Math.round(desired));
   }
 
-  /**
-   * Initialization logic:
-   * - compute desired height
-   * - create FullCalendar with numeric height (forces it to fill that px)
-   * - render and then force an update/redraw a little later (helps when fonts/styles load)
-   * - respond to window resize by recomputing and applying new height
-   */
-
+  let calendar; // <-- hoisted so timers/listeners can see it
 
   function initCalendar() {
-    var h = computeDesiredHeight();
+    const h = computeDesiredHeight();
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: "dayGridMonth",
-      // numeric pixel height forces FullCalendar to exactly use that height
       height: h,
-      contentHeight: h,
-      // useful options to avoid inner scrollbars and react to resize
+      // contentHeight: h, // optional; height alone usually suffices
       expandRows: true,
       handleWindowResize: true,
       events: "/api/activities",
-     
-
 
       // INTERACTIONS
-      dateClick: function (info) {
-        var dateInput = document.getElementById("date");
+      dateClick(info) {
+        const dateInput = document.getElementById("date");
         if (dateInput) dateInput.value = info.dateStr;
-      
-        //Try to open the modal (bootstrap 5)
-        var el = document.getElementById("addModal");
+
+        const el = document.getElementById("addModal");
         if (el && window.bootstrap && bootstrap.Modal) {
-          var modal = bootstrap.Modal.getOrCreateInstance(el, {
+          const modal = bootstrap.Modal.getOrCreateInstance(el, {
             backdrop: "static",
             keyboard: false,
           });
           modal.show();
+        } else {
+          window.location.href =
+            "/add?date=" + encodeURIComponent(info.dateStr);
         }
-        //fallback, if bootstrap not available, use the endpoint
-        else {
-          window.location.href = "/add?date=" + info.dateStr;
+      },
+
+      // Edit and Delete Interactions
+      async eventClick(info) {
+        info.jsEvent.preventDefault();
+
+        try {
+          const res = await fetch(
+            `/activities/${encodeURIComponent(info.event.id)}/partial`
+          );
+          const html = await res.text();
+
+          const modalBody = document.querySelector(
+            "#activityModal .modal-body"
+          );
+          if (!modalBody) throw new Error("Modal body not found");
+          modalBody.innerHTML = html;
+
+          const editBtn = document.getElementById("editBtn");
+          if (editBtn)
+            editBtn.href = `/activities/${encodeURIComponent(
+              info.event.id
+            )}/edit`;
+          const deleteBtn = document.getElementById("deleteBtn");
+          if (deleteBtn)
+            deleteBtn.href = `/activities/${encodeURIComponent(
+              info.event.id
+            )}/delete`;
+
+          const modalEl = document.getElementById("activityModal");
+          if (!modalEl) throw new Error("#activityModal not found");
+          bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        } catch (err) {
+          console.error(err);
         }
       },
     });
 
-     // Edit and Delete Interactions
-    eventClick: function (info) {
-      info.jsEvent.preventDefault();
+    calendar.render();
 
-
-    
-
-      fetch(`/activities/${info.event.id}/partial`)
-        .then(res => res.text())
-        .then(html => {
-      // 🔹 Inject the rendered HTML into the modal body
-      document.querySelector('#activityModal .modal-body').innerHTML = html;
-
-      // 🔹 Update footer buttons
-      document.getElementById('editBtn').href = `/activities/${info.event.id}/edit`;
-      document.getElementById('deleteBtn').href = `/activities/${info.event.id}/delete`;
-
-      // 🔹 Show modal
-      new bootstrap.Modal(document.getElementById('activityModal')).show();
-    })
-    .catch(err => console.error(err));
-}
-
-    // small delay to allow fonts/images to settle, then update size
-    setTimeout(function () {
-      calendar.updateSize();
+    // let fonts/layout settle, then recompute and update size
+    setTimeout(() => {
+      try {
+        calendar.setOption("height", computeDesiredHeight());
+        calendar.updateSize();
+      } catch (e) {}
     }, 80);
 
-    // when the window changes size, recompute height and update the calendar
-    window.addEventListener("resize", function () {
-      var newH = computeDesiredHeight();
+    // update on resize
+    window.addEventListener("resize", () => {
+      if (!calendar) return;
+      const newH = computeDesiredHeight();
       calendar.setOption("height", newH);
       calendar.updateSize();
     });
   }
 
-  /**
-   * Defensive startup:
-   * - sometimes the wrapper height reads zero immediately (fonts/styles not loaded,
-   *   or the layout hasn't settled). Retry several times with short delays.
-   * - after a few tries give up waiting and initialize anyway (with fallbacks).
-   */
-  var tries = 0;
+  // defensive startup — wait until wrapper has a non-zero height
+  let tries = 0;
   function waitThenInit() {
-    var wrapperHeight = wrapper.getBoundingClientRect().height;
+    const wrapperHeight = wrapper.getBoundingClientRect().height;
     if (wrapperHeight > 0 || tries > 10) {
-      // either we have a measured height, or we tried enough times — initialize
       initCalendar();
     } else {
-      // wait a bit and try again
       tries++;
-      setTimeout(waitThenInit, 60); // 60ms
+      setTimeout(waitThenInit, 60);
     }
   }
 
-  // start the defensive initialization sequence
   waitThenInit();
 });
